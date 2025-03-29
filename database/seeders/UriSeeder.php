@@ -21,6 +21,18 @@ class UriSeeder extends Seeder
             [
               'name' => 'api/v1/task/{task}',
             ],
+            [
+              'name' => 'api/v1/profile',
+            ],
+            [
+              'name' => 'api/v1/role',
+            ],
+            [
+              'name' => 'api/v1/role/{role}',
+            ],
+            [
+              'name' => 'api/v1/logout',
+            ],
         ]);
     }
 }

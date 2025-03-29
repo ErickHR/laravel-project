@@ -11,18 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('permissions', function (Blueprint $table) {
+        Schema::create('uri_actives', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('role_id');
+
             $table->unsignedBigInteger('uri_id');
-            $table->unsignedBigInteger('method_id');
-            $table->boolean('status')->default(1);
-
-            $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
-            $table->foreign('method_id')->references('id')->on('methods')->onDelete('cascade');
             $table->foreign('uri_id')->references('id')->on('uris')->onDelete('cascade');
-            $table->unique(['role_id','method_id','uri_id']);
-
+            $table->unsignedBigInteger('method_id');
+            $table->foreign('method_id')->references('id')->on('methods')->onDelete('cascade');
+            $table->boolean('status')->default(1);
             $table->timestamps();
         });
     }
@@ -32,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('permissions');
+        Schema::dropIfExists('uri_actives');
     }
 };

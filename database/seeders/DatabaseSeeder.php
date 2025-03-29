@@ -15,16 +15,28 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        $user_admin = User::factory()->create([
+            'name' => 'Admin',
+            'email' => 'admin@example.com',
+        ]);
+
+        $user_student = User::factory()->create([
+          'name' => 'Student',
+          'email' => 'student@example.com',
         ]);
 
         $this->call([
           MethodSeeder::class,
           UriSeeder::class,
           RoleSeeder::class,
-          PermissionSeeder::class
+          PermissionSeeder::class,
+          UriActiveSeeder::class,
         ]);
+
+        $user_admin->role_id = 1;
+        $user_admin->save();
+
+        $user_student->role_id = 2;
+        $user_student->save();
     }
 }

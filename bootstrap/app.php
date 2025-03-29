@@ -5,6 +5,7 @@ use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 
 use App\Http\Middleware\CheckPermission;
+use App\Http\Middleware\CustomUnauthenticatedResponse;
 
 return Application::configure(basePath: dirname(__DIR__))
   ->withRouting(
@@ -15,8 +16,10 @@ return Application::configure(basePath: dirname(__DIR__))
   )
   ->withMiddleware(function (Middleware $middleware) {
     $middleware->alias([
-      'check.role' => CheckPermission::class,
+      'check.permissions' => CheckPermission::class,
+      'auth.unauthenticated' => CustomUnauthenticatedResponse::class,
     ]);
+    $middleware->statefulApi();
   })
   ->withExceptions(function (Exceptions $exceptions) {
     //

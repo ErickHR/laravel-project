@@ -10,6 +10,12 @@ class Permission extends Model
     /** @use HasFactory<\Database\Factories\PermissionFactory> */
     use HasFactory;
 
+    protected $fillable = [
+      'role_id',
+      'uri_id',
+      'method_id',
+    ];
+
     public function uri() {
       return $this->belongsTo(Uri::class);
     }
