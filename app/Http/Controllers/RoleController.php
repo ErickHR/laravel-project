@@ -2,20 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Task;
-use App\Http\Requests\StoreTaskRequest;
-use App\Http\Requests\UpdateTaskRequest;
+use App\Models\Role;
+use App\Http\Requests\StoreRoleRequest;
+use App\Http\Requests\UpdateRoleRequest;
 
-class TaskController extends Controller
+class RoleController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return [
-          'get list'
-        ];
+        return Role::with(['permissions', 'permissions.uri','permissions.method'])->get();
     }
 
     /**
@@ -29,27 +27,23 @@ class TaskController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreTaskRequest $request)
+    public function store(StoreRoleRequest $request)
     {
-        return [
-          'create'
-        ];
+        //
     }
 
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(Role $role)
     {
-      return [
-        'get one'
-      ];
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+    public function edit(Role $role)
     {
         //
     }
@@ -57,20 +51,16 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTaskRequest $request, $id)
+    public function update(UpdateRoleRequest $request, Role $role)
     {
-        return [
-          'update'
-        ];
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(Role $role)
     {
-        return [
-          'delete'
-        ];
+        //
     }
 }

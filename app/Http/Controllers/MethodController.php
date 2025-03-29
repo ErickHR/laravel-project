@@ -2,20 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Task;
-use App\Http\Requests\StoreTaskRequest;
-use App\Http\Requests\UpdateTaskRequest;
+use App\Models\Method;
+use App\Http\Requests\StoreMethodRequest;
+use App\Http\Requests\UpdateMethodRequest;
 
-class TaskController extends Controller
+class MethodController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return [
-          'get list'
-        ];
+        //
     }
 
     /**
@@ -29,27 +27,23 @@ class TaskController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreTaskRequest $request)
+    public function store(StoreMethodRequest $request)
     {
-        return [
-          'create'
-        ];
+        //
     }
 
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(Method $method)
     {
-      return [
-        'get one'
-      ];
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+    public function edit(Method $method)
     {
         //
     }
@@ -57,20 +51,16 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTaskRequest $request, $id)
+    public function update(UpdateMethodRequest $request, Method $method)
     {
-        return [
-          'update'
-        ];
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(Method $method)
     {
-        return [
-          'delete'
-        ];
+        //
     }
 }

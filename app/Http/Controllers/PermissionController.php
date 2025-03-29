@@ -2,20 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Task;
-use App\Http\Requests\StoreTaskRequest;
-use App\Http\Requests\UpdateTaskRequest;
+use App\Models\Permission;
+use App\Http\Requests\StorePermissionRequest;
+use App\Http\Requests\UpdatePermissionRequest;
 
-class TaskController extends Controller
+class PermissionController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return [
-          'get list'
-        ];
+        //
     }
 
     /**
@@ -29,27 +27,23 @@ class TaskController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreTaskRequest $request)
+    public function store(StorePermissionRequest $request)
     {
-        return [
-          'create'
-        ];
+        //
     }
 
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(Permission $permission)
     {
-      return [
-        'get one'
-      ];
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+    public function edit(Permission $permission)
     {
         //
     }
@@ -57,20 +51,16 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTaskRequest $request, $id)
+    public function update(UpdatePermissionRequest $request, Permission $permission)
     {
-        return [
-          'update'
-        ];
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(Permission $permission)
     {
-        return [
-          'delete'
-        ];
+        //
     }
 }
