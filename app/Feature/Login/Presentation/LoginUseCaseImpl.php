@@ -8,6 +8,8 @@ use App\Core\Constans\Word;
 use App\Core\Error\AppError;
 use App\Feature\Login\Domain\Repository\UserRepository;
 use App\Feature\Login\Domain\UseCase\LoginUseCase;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Request;
 
 class LoginUseCaseImpl implements LoginUseCase {
 
@@ -32,16 +34,20 @@ class LoginUseCaseImpl implements LoginUseCase {
       throw AppError::notAuthorized('Invalid credentials', );
     }
 
-    // Auth::login($user);
+    if( !Auth::attempt(['email' => $email, 'password' => $password]) ) {
+      throw AppError::notAuthorized('Invalid credentials', );
+    }
 
+    Request::session()->regenerate();
     $token = $user->createToken(
-        config('app.api_token'),
-        ['*'],
-        now()->addMinutes(Word::CINCO)
-      )->plainTextToken;
+      config('app.api_token'),
+      ['*'],
+      now()->addMinutes(Word::CINCO)
+    )->plainTextToken;
 
     return [
-      'token' => $token
+      'token' => $token,
     ];
+
   }
 }

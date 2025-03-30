@@ -31,7 +31,7 @@ class LoginController extends Controller
         $response = $this->loginUseCase->execute($request->email, $request->password);
 
         return $this->sendSuccess([
-          'token' => $response['token'],
+          'token' => explode('|', $response['token'])[1]
         ]);
         
       } catch (\Throwable $th) {
@@ -45,7 +45,7 @@ class LoginController extends Controller
       try {
 
         $request->user()->currentAccessToken()->delete();
-        return $this->sendSuccess([], Message::LOGOUT_SUCCESS);
+        return $this->sendSuccess(null, Message::LOGOUT_SUCCESS);
 
       } catch (\Throwable $th) {
         return $this->sendError($th);

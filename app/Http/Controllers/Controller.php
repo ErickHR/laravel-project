@@ -8,10 +8,18 @@ abstract class Controller
 {
 
     public function sendSuccess($data, $message = null,  $statucCode = 200) {
-      return response()->json([
-        'message' => $message,
-        'data' => $data,
-      ], $statucCode);
+
+      $response = [];
+
+      if( $message ) {
+        $response['message'] = $message;
+      }
+
+      if( $data ) {
+        $response['data'] = $data;
+      }
+
+      return response()->json($response, $statucCode);
     }
 
     public function sendError( $th ) {
