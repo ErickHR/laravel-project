@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Validator;
 use App\Core\Constans\Message;
 use App\Core\Error\AppError;
 use App\Feature\Login\Domain\UseCase\LoginUseCase;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 
 class LoginController extends Controller
 {
@@ -44,8 +46,14 @@ class LoginController extends Controller
 
       try {
 
-        $request->user()->currentAccessToken()->delete();
-        return $this->sendSuccess(null, Message::LOGOUT_SUCCESS);
+        // $request->user()->currentAccessToken()->delete();
+        $cookie = Cookie::forget('laravel_session');
+        Auth::guard('web')->logout();
+        $request->user()->tokens()->delete();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return $this->sendSuccess(null, Message::LOGOUT_SUCCESS)->withCookie($cookie);
 
       } catch (\Throwable $th) {
         return $this->sendError($th);
