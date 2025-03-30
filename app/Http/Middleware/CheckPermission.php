@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use App\Core\Constans\Message;
+use App\Core\Error\AppError;
 use App\Models\Role;
 use Closure;
 use Illuminate\Http\Request;
@@ -17,38 +19,47 @@ class CheckPermission
   public function handle(Request $request, Closure $next): Response
   {
 
-    $role_id = $request->user()->role_id;
-    
-    $role = Role::where('id', $role_id)->where('status', true)->first();
+    try {
+      $role_id = $request->user()->role_id;
 
-    $method = $request->method();
-    $uri = $request->route()->uri;
+      $role = Role::where('id', $role_id)->where('status', true)->first();
 
-    if (is_null($role) || !isset($role)) {
-      return response()->json([
-        'message' => 'You are not authorized to access this route.'
-      ], 403);
-    }
+      $method = $request->method();
+      $uri = $request->route()->uri;
 
-    $roles = Role::with(['permissions', 'permissions.uri', 'permissions.method'])
-      ->where('id', $role_id)->first();
-
-    if (is_null($roles) || !isset($roles)) {
-      return response()->json([
-        'message' => 'You are not authorized to access this route.'
-      ], 403);
-    }
-
-    $roles = $roles->permissions->toArray();
-
-    foreach ($roles as $permission) {
-      if ($permission['method']['name'] == $method && $permission['uri']['name'] == $uri) {
-        return $next($request);
+      if (is_null($role) || !isset($role)) {
+        throw AppError::notAuthorized(Message::NOT_AUTHORIZED);
       }
-    }
 
-    return response()->json([
-      'message' => 'You are not authorized to access this route.'
-    ], 403);
+      $roles = Role::with(['permissions', 'permissions.uri', 'permissions.method'])
+        ->where('id', $role_id)->first();
+
+      if (is_null($roles) || !isset($roles)) {
+        throw AppError::notAuthorized(Message::NOT_AUTHORIZED);
+      }
+
+      $roles = $roles->permissions->toArray();
+
+      foreach ($roles as $permission) {
+        if ($permission['method']['name'] == $method && $permission['uri']['name'] == $uri) {
+          return $next($request);
+        }
+      }
+
+      throw AppError::notAuthorized(Message::NOT_AUTHORIZED);;
+
+    } catch (\Throwable $th) {
+      if ($th instanceof AppError) {
+        return response()->json([
+          'name' => $th->getNameError(),
+          'message' => $th->getMessageError(),
+        ], $th->getCodeStatus());
+      }
+      return response()->json([
+        'name' => 'ERROR',
+        'message' => $th->getMessage(),
+        'trace' => $th->getTrace(),
+      ], 500);
+    }
   }
 }

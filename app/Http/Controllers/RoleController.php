@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Core\Constans\Word;
 use App\Models\Role;
 use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
-use App\Models\Method;
 use App\Models\Permission;
-use App\Models\Uri;
 use App\Models\UriActive;
 
 class RoleController extends Controller
@@ -36,9 +35,9 @@ class RoleController extends Controller
 
         $role = Role::create(['name' => $request->name,]);
 
-        if(  $request->permissions == 'full' ) {
+        if(  $request->permissions == Word::FULL ) {
 
-            $url_actives = UriActive::where('status', 1)->get();
+            $url_actives = UriActive::where('status', Word::ACTIVE)->get();
 
             foreach ($url_actives as $url_active) {
                 Permission::create([
@@ -91,9 +90,9 @@ class RoleController extends Controller
         }
 
         if( isset($request->permissions) ) {
-          if( $request->permissions == 'full' ) {
+          if( $request->permissions == Word::FULL ) {
             Permission::where('role_id', $role->id)->delete();
-            $url_actives = UriActive::where('status', 1)->get();
+            $url_actives = UriActive::where('status', Word::ACTIVE)->get();
             foreach ($url_actives as $url_active) {
                 Permission::create([
                     'role_id' => $role->id,
